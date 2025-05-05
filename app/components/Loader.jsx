@@ -29,6 +29,26 @@ export default function Loader({ onComplete }) {
     }
   }, [showSecondMessage]);
 
+  useEffect(() => {
+    const interval = setInterval(async () => {
+      const res = await fetch('/api/sensor-data');
+      const data = await res.json();
+      if (data) {
+        console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>',data.message.read01);
+        if(data.message.read01){
+          handleStart();
+        }
+        if(data.message.read02 && data.message.read01){
+          handleContinue();
+        }
+
+        // setTimeout(() => setShow(false), 5000); // hide after 5 seconds
+      }
+    }, 2000); // Poll every 2 seconds
+
+    return () => clearInterval(interval);
+  }, []);
+
   const handleStart = () => {
     setShowButton(false);
     setShowSecondMessage(true);
