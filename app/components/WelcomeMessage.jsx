@@ -11,6 +11,10 @@ const ReactConfetti = dynamic(() => import('react-confetti'), {
 export default function WelcomeMessage() {
   const [showWinConfetti, setShowWinConfetti] = useState(false);
   const [showLostConfetti, setShowLostConfetti] = useState(false);
+  const [showMessage, setShowMessage] = useState(false);
+  const [message, setMessage] = useState('');
+  const [showTimer, setShowTimer] = useState(false);
+  const [timeLeft, setTimeLeft] = useState(60);
   const [windowSize, setWindowSize] = useState({
     width: typeof window !== 'undefined' ? window.innerWidth : 0,
     height: typeof window !== 'undefined' ? window.innerHeight : 0,
@@ -28,18 +32,46 @@ export default function WelcomeMessage() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  useEffect(() => {
+    let timer;
+    if (showTimer && timeLeft > 0) {
+      timer = setInterval(() => {
+        setTimeLeft((prevTime) => prevTime - 1);
+      }, 1000);
+    } else if (timeLeft === 0) {
+      setShowTimer(false);
+      setShowMessage(false);
+      setShowLostConfetti(false);
+      setTimeLeft(60);
+    }
+    return () => clearInterval(timer);
+  }, [showTimer, timeLeft]);
+
   const handleWinClick = () => {
     setShowWinConfetti(true);
-    setTimeout(() => setShowWinConfetti(false), 5000);
+    setMessage('Congratulations, you matched your ranges!');
+    setShowMessage(true);
+    setTimeout(() => {
+      setShowWinConfetti(false);
+      setShowMessage(false);
+    }, 5000);
   };
 
   const handleLostClick = () => {
     setShowLostConfetti(true);
-    setTimeout(() => setShowLostConfetti(false), 5000);
+    setMessage('Try to calm down you both need the same heartbeat range to enjoy the magic.');
+    setShowMessage(true);
+    setShowTimer(true);
   };
 
   // Sad emojis array
   const sadEmojis = ['😢', '😭', '😔', '😞', '😟', '😕', '🙁', '☹️', '😥', '😓'];
+
+  const formatTime = (seconds) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins}:${secs.toString().padStart(2, '0')}`;
+  };
 
   return (
     <>
@@ -89,9 +121,32 @@ export default function WelcomeMessage() {
         </div>
       )}
       <div className="w-full max-w-2xl mx-auto mb-8 p-6 rounded-2xl backdrop-blur-md bg-white/10 border border-white/20 shadow-lg">
-        <h1 className="text-3xl md:text-4xl font-bold text-center text-white mb-8">
-          Feel the Pulse of Connection
-        </h1>
+        {!showMessage ? (
+          <h1 className="text-3xl md:text-4xl font-bold text-center text-white mb-8">
+            Feel the Pulse of Connection
+          </h1>
+        ) : (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="text-center"
+          >
+            <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">
+              {message}
+            </h2>
+            {showTimer && (
+              <motion.div
+                initial={{ scale: 0.8, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ duration: 0.5 }}
+                className="text-4xl md:text-5xl font-bold text-[#E41A1C]"
+              >
+                {formatTime(timeLeft)}
+              </motion.div>
+            )}
+          </motion.div>
+        )}
         <div className="flex justify-center gap-4">
           <motion.button
             whileHover={{ scale: 1.05 }}
