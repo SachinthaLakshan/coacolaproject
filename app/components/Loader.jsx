@@ -3,7 +3,7 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { useEffect, useState } from 'react';
 
-export default function Loader({ onComplete }) {
+export default function Loader({ onComplete, setSensorData }) {
   const [showLoader, setShowLoader] = useState(true);
   const [showButton, setShowButton] = useState(false);
   const [showSecondMessage, setShowSecondMessage] = useState(false);
@@ -40,6 +40,7 @@ export default function Loader({ onComplete }) {
         }
         if(data.message.read02 && data.message.read01){
           handleContinue();
+          setSensorData(data.message);
         }
 
         // setTimeout(() => setShow(false), 5000); // hide after 5 seconds
@@ -48,6 +49,14 @@ export default function Loader({ onComplete }) {
 
     return () => clearInterval(interval);
   }, []);
+
+  const haddleRest = async () => {
+    const res = await fetch('/api/sensor-data', {
+      method: 'PUT'
+    });
+    const data = await res.json();
+    console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>',data.message);
+  }
 
   const handleStart = () => {
     setShowButton(false);

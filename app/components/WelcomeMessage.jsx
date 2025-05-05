@@ -8,7 +8,7 @@ const ReactConfetti = dynamic(() => import('react-confetti'), {
   ssr: false
 });
 
-export default function WelcomeMessage() {
+export default function WelcomeMessage({ sensorData,onComplete }) {
   const [showWinConfetti, setShowWinConfetti] = useState(false);
   const [showLostConfetti, setShowLostConfetti] = useState(false);
   const [showMessage, setShowMessage] = useState(false);
@@ -21,6 +21,8 @@ export default function WelcomeMessage() {
   });
 
   useEffect(() => {
+    console.log('sensorData:',sensorData);
+    
     const handleResize = () => {
       setWindowSize({
         width: window.innerWidth,
@@ -39,21 +41,56 @@ export default function WelcomeMessage() {
         setTimeLeft((prevTime) => prevTime - 1);
       }, 1000);
     } else if (timeLeft === 0) {
+      haddleRest();
       setShowTimer(false);
       setShowMessage(false);
       setShowLostConfetti(false);
-      setTimeLeft(60);
+      // setTimeLeft(60);
+      
     }
     return () => clearInterval(timer);
   }, [showTimer, timeLeft]);
+
+  useEffect(() => {
+    // Show continue button after second message appears
+    if(heartRateMatched(sensorData.ratePerson01, sensorData.ratePerson02)){
+      handleWinClick();
+      // setTimeout(() => {
+      //   haddleRest();
+      // }, 3000);
+    }else{
+      handleLostClick();
+    //   setTimeout(() => {
+    //     haddleRest();
+    //   }, 5000);
+     }
+    
+  }, [sensorData]);
+
+  function heartRateMatched(rate01, rate02) {
+    return Math.abs(rate01 - rate02) <= 5;
+  }
+  
+
+  const haddleRest = async () => {
+    const res = await fetch('/api/sensor-data', {
+      method: 'PUT'
+    });
+    const data = await res.json();
+    if(data){
+      onComplete();
+    }
+  }
 
   const handleWinClick = () => {
     setShowWinConfetti(true);
     setMessage('Congratulations, you matched your ranges!');
     setShowMessage(true);
+    
     setTimeout(() => {
       setShowWinConfetti(false);
       setShowMessage(false);
+      haddleRest();
     }, 5000);
   };
 
@@ -147,7 +184,7 @@ export default function WelcomeMessage() {
             )}
           </motion.div>
         )}
-        <div className="flex justify-center gap-4">
+        {/* <div className="flex justify-center gap-4">
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
@@ -168,7 +205,7 @@ export default function WelcomeMessage() {
           >
             lost
           </motion.button>
-        </div>
+        </div> */}
       </div>
     </>
   );

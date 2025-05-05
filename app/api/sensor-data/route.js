@@ -39,3 +39,20 @@ export async function POST(request) {
 export async function GET() {
     return new Response(JSON.stringify({ message: espResponce }), { status: 200 });
   }
+
+export async function PUT() {
+    // Clear the espResponce object
+    espResponce = {
+      read01: 0,  
+      read02: 0,
+      ratePerson01: false,
+      ratePerson02: false
+  };
+
+  return NextResponse.json(
+    { message: 'Data reset successfully' },
+    { status: 200 }
+  );
+}
+
+
