@@ -87,11 +87,17 @@ export default function WelcomeMessage({ sensorData,onComplete }) {
     setMessage('Congratulations, you matched your ranges!');
     setShowMessage(true);
     
+    // First message for 3 seconds
+    setTimeout(() => {
+      setMessage('You won one bottle of cocacola!');
+    }, 3000);
+
+    // After 6 seconds, reset everything
     setTimeout(() => {
       setShowWinConfetti(false);
-      setShowMessage(false);
+      //setShowMessage(false);
       haddleRest();
-    }, 5000);
+    }, 6000);
   };
 
   const handleLostClick = () => {

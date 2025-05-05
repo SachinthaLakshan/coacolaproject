@@ -275,7 +275,7 @@ export default function Loader({ onComplete, setSensorData }) {
             )}
 
             {/* Start Button */}
-            <AnimatePresence>
+            {/* <AnimatePresence>
               {showButton && !showSecondMessage && (
                 <motion.button
                   initial={{ scale: 0, opacity: 0 }}
@@ -301,10 +301,10 @@ export default function Loader({ onComplete, setSensorData }) {
                   Start
                 </motion.button>
               )}
-            </AnimatePresence>
+            </AnimatePresence> */}
 
             {/* Continue Button */}
-            <AnimatePresence>
+            {/* <AnimatePresence>
               {showContinueButton && showSecondMessage && (
                 <motion.button
                   initial={{ scale: 0, opacity: 0 }}
@@ -330,7 +330,7 @@ export default function Loader({ onComplete, setSensorData }) {
                   Continue
                 </motion.button>
               )}
-            </AnimatePresence>
+            </AnimatePresence> */}
           </div>
         </motion.div>
       )}
