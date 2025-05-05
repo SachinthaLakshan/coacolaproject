@@ -8,6 +8,7 @@ export default function Loader({ onComplete }) {
   const [showButton, setShowButton] = useState(false);
   const [showSecondMessage, setShowSecondMessage] = useState(false);
   const [showContinueButton, setShowContinueButton] = useState(false);
+  const [showMagicLoading, setShowMagicLoading] = useState(false);
 
   useEffect(() => {
     // Show button after text animation
@@ -34,8 +35,15 @@ export default function Loader({ onComplete }) {
   };
 
   const handleContinue = () => {
-    setShowLoader(false);
-    onComplete();
+    setShowSecondMessage(false);
+    setShowContinueButton(false);
+    setShowMagicLoading(true);
+    
+    // Complete after magic loading
+    setTimeout(() => {
+      setShowLoader(false);
+      onComplete();
+    }, 3000);
   };
 
   return (
@@ -76,7 +84,57 @@ export default function Loader({ onComplete }) {
 
           {/* Loader content */}
           <div className="relative flex flex-col items-center justify-center h-full">
-            {!showSecondMessage ? (
+            {showMagicLoading ? (
+              <motion.div
+                initial={{ scale: 0.8, opacity: 0 }}
+                animate={{ 
+                  scale: [1, 1.1, 1],
+                  opacity: 1
+                }}
+                transition={{
+                  scale: {
+                    duration: 2,
+                    repeat: Infinity,
+                    repeatType: "reverse",
+                    ease: "easeInOut"
+                  },
+                  opacity: { duration: 0.5 }
+                }}
+                className="text-center"
+              >
+                <motion.h1
+                  className="text-4xl md:text-6xl font-bold text-white mb-6 tracking-wide"
+                  initial={{ y: 20, opacity: 0 }}
+                  animate={{ 
+                    y: 0, 
+                    opacity: 1,
+                    transition: {
+                      duration: 0.8,
+                      ease: "easeOut"
+                    }
+                  }}
+                >
+                  Real Magic is Loading
+                </motion.h1>
+                <motion.div
+                  className="w-48 h-1 bg-white/20 rounded-full mx-auto overflow-hidden"
+                  initial={{ scaleX: 0 }}
+                  animate={{ scaleX: 1 }}
+                  transition={{ duration: 3, ease: "easeInOut" }}
+                >
+                  <motion.div
+                    className="h-full bg-[#E41A1C]"
+                    initial={{ x: "-100%" }}
+                    animate={{ x: "100%" }}
+                    transition={{
+                      duration: 1.5,
+                      repeat: Infinity,
+                      ease: "linear",
+                    }}
+                  />
+                </motion.div>
+              </motion.div>
+            ) : !showSecondMessage ? (
               <motion.div
                 initial={{ scale: 0.8, opacity: 0 }}
                 animate={{ 
