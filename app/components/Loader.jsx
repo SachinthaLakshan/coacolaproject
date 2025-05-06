@@ -113,6 +113,25 @@ export default function Loader({ onComplete, setSensorData }) {
 
           {/* Loader content */}
           <div className="relative flex flex-col items-center justify-center h-full">
+            <motion.div
+              initial={{ scale: 0.8 }}
+              animate={{ 
+                scale: [1, 1.1, 1],
+                y: [0, -10, 0]
+              }}
+              transition={{
+                duration: 2,
+                repeat: Infinity,
+                ease: "easeInOut"
+              }}
+              className="absolute top-20"
+            >
+              <img 
+                src="/logo-loader.png" 
+                alt="Coca-Cola Logo" 
+                className="w-48 h-48 object-contain"
+              />
+            </motion.div>
             {showMagicLoading ? (
               <motion.div
                 initial={{ scale: 0.8, opacity: 0 }}

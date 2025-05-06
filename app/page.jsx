@@ -31,9 +31,9 @@ export default function Home() {
             <WelcomeMessage sensorData={sensorData} onComplete={()=>handleComplete()} />
             
             <div className="flex items-center justify-center gap-8 mt-8">
-              <Heart bpm={72} position="left" />
+              <Heart bpm={sensorData.ratePerson01} position="left" />
               <div className="w-1 h-24 bg-white/20 rounded-full" />
-              <Heart bpm={76} position="right" />
+              <Heart bpm={sensorData.ratePerson02} position="right" />
             </div>
           </div>
         </>

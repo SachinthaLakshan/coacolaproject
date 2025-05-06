@@ -68,7 +68,7 @@ export default function WelcomeMessage({ sensorData,onComplete }) {
   }, [sensorData]);
 
   function heartRateMatched(rate01, rate02) {
-    return Math.abs(rate01 - rate02) <= 5;
+    return Math.abs(rate01 - rate02) <= 40;
   }
   
 
@@ -77,9 +77,9 @@ export default function WelcomeMessage({ sensorData,onComplete }) {
       method: 'PUT'
     });
     const data = await res.json();
-    if(data){
-      onComplete();
-    }
+    // if(data){
+    //   onComplete();
+    // }
   }
 
   const handleWinClick = () => {
@@ -90,7 +90,7 @@ export default function WelcomeMessage({ sensorData,onComplete }) {
     // First message for 3 seconds
     setTimeout(() => {
       setMessage('You won one bottle of cocacola!');
-    }, 3000);
+    }, 5000);
 
     // After 6 seconds, reset everything
     setTimeout(() => {
@@ -190,28 +190,18 @@ export default function WelcomeMessage({ sensorData,onComplete }) {
             )}
           </motion.div>
         )}
-        {/* <div className="flex justify-center gap-4">
+        <div className="flex justify-center gap-4">
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            onClick={handleWinClick}
+            onClick={onComplete}
             className="px-6 py-3 bg-[#E41A1C] text-white font-bold rounded-full 
                      shadow-lg hover:shadow-xl transition-all duration-300
                      border-2 border-white/20 hover:border-white/40"
           >
-            win
+            Begin Again
           </motion.button>
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={handleLostClick}
-            className="px-6 py-3 bg-white text-[#E41A1C] font-bold rounded-full 
-                     shadow-lg hover:shadow-xl transition-all duration-300
-                     border-2 border-[#E41A1C]/20 hover:border-[#E41A1C]/40"
-          >
-            lost
-          </motion.button>
-        </div> */}
+        </div>
       </div>
     </>
   );
