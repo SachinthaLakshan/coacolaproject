@@ -115,16 +115,14 @@ export default function Loader({ onComplete, setSensorData }) {
           <div className="relative flex flex-col items-center justify-center h-full">
             {/* Logo */}
             <motion.div
-              initial={{ scale: 0.8 }}
+              initial={{ scale: 0.8, rotate: -5, opacity: 0 }}
               animate={{ 
-                scale: [1, 1.1, 1],
-                y: [0, -10, 0]
+                scale: 1,
+                y: [0, -5, 0],
+                rotate: -10,
+                opacity: 1
               }}
-              transition={{
-                duration: 2,
-                repeat: Infinity,
-                ease: "easeInOut"
-              }}
+              
               className="absolute top-20"
             >
               <img 
@@ -187,17 +185,12 @@ export default function Loader({ onComplete, setSensorData }) {
               <motion.div
                 initial={{ scale: 0.8, opacity: 0 }}
                 animate={{ 
-                  scale: [1, 1.1, 1],
+                  scale: 1,
                   opacity: 1
                 }}
                 transition={{
-                  scale: {
-                    duration: 2,
-                    repeat: Infinity,
-                    repeatType: "reverse",
-                    ease: "easeInOut"
-                  },
-                  opacity: { duration: 0.5 }
+                  duration: 0.5,
+                  ease: "easeOut"
                 }}
                 className="text-center"
               >
