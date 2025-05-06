@@ -9,6 +9,7 @@ const ReactConfetti = dynamic(() => import('react-confetti'), {
 });
 
 export default function WelcomeMessage({ sensorData,onComplete }) {
+  const beatGap = 30;
   const [showWinConfetti, setShowWinConfetti] = useState(false);
   const [showLostConfetti, setShowLostConfetti] = useState(false);
   const [showMessage, setShowMessage] = useState(false);
@@ -68,7 +69,7 @@ export default function WelcomeMessage({ sensorData,onComplete }) {
   }, [sensorData]);
 
   function heartRateMatched(rate01, rate02) {
-    return Math.abs(rate01 - rate02) <= 40;
+    return Math.abs(rate01 - rate02) <= beatGap;
   }
   
 
@@ -84,17 +85,17 @@ export default function WelcomeMessage({ sensorData,onComplete }) {
 
   const handleWinClick = () => {
     setShowWinConfetti(true);
-    setMessage('Congratulations, you matched your ranges!');
+    setMessage('Congratulations, Your Heart Beats Syncs!');
     setShowMessage(true);
     
     // First message for 3 seconds
     setTimeout(() => {
-      setMessage('You won one bottle of cocacola!');
+      setMessage('Share a Coke on us!');
     }, 5000);
 
     // After 6 seconds, reset everything
     setTimeout(() => {
-      setShowWinConfetti(false);
+      //setShowWinConfetti(false);
       //setShowMessage(false);
       haddleRest();
     }, 6000);
@@ -102,9 +103,10 @@ export default function WelcomeMessage({ sensorData,onComplete }) {
 
   const handleLostClick = () => {
     setShowLostConfetti(true);
-    setMessage('Try to calm down you both need the same heartbeat range to enjoy the magic.');
+    setMessage('Calm down, both of you. magic happens when your hearts beat in sync.');
     setShowMessage(true);
-    setShowTimer(true);
+    haddleRest();
+    // setShowTimer(true);
   };
 
   // Sad emojis array

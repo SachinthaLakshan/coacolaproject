@@ -9,12 +9,13 @@ export default function Loader({ onComplete, setSensorData }) {
   const [showSecondMessage, setShowSecondMessage] = useState(false);
   const [showContinueButton, setShowContinueButton] = useState(false);
   const [showMagicLoading, setShowMagicLoading] = useState(false);
+  const [timeLeft, setTimeLeft] = useState(5);
 
   useEffect(() => {
     // Show button after text animation
     const buttonTimer = setTimeout(() => {
       setShowButton(true);
-    }, 2000);
+    }, 7000);
 
     return () => clearTimeout(buttonTimer);
   }, []);
@@ -24,7 +25,7 @@ export default function Loader({ onComplete, setSensorData }) {
     if (showSecondMessage) {
       const continueButtonTimer = setTimeout(() => {
         setShowContinueButton(true);
-      }, 1500);
+      }, 7000);
       return () => clearTimeout(continueButtonTimer);
     }
   }, [showSecondMessage]);
@@ -50,6 +51,26 @@ export default function Loader({ onComplete, setSensorData }) {
     return () => clearInterval(interval);
   }, []);
 
+  useEffect(() => {
+    let timer;
+    if (showMagicLoading && timeLeft > 0) {
+      timer = setInterval(() => {
+        setTimeLeft((prev) => {
+          if (prev <= 1) {
+            clearInterval(timer);
+            setTimeout(() => {
+              setShowLoader(false);
+              //onComplete();
+            }, 1000);
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+    }
+    return () => clearInterval(timer);
+  }, [showMagicLoading, timeLeft, onComplete]);
+
   const haddleRest = async () => {
     const res = await fetch('/api/sensor-data', {
       method: 'PUT'
@@ -72,7 +93,11 @@ export default function Loader({ onComplete, setSensorData }) {
     setTimeout(() => {
       setShowLoader(false);
       onComplete();
-    }, 3000);
+    }, 7000);
+  };
+
+  const formatTime = (seconds) => {
+    return `00:${seconds.toString().padStart(2, '0')}`;
   };
 
   return (
@@ -195,7 +220,7 @@ export default function Loader({ onComplete, setSensorData }) {
                 className="text-center"
               >
                 <motion.h1
-                  className="text-4xl md:text-6xl font-bold text-white mb-6 tracking-wide"
+                  className="text-4xl md:text-6xl font-bold text-white mb-6 mt-20 pt-20 tracking-wide"
                   initial={{ y: 20, opacity: 0 }}
                   animate={{ 
                     y: 0, 
@@ -209,21 +234,52 @@ export default function Loader({ onComplete, setSensorData }) {
                   Real Magic is Loading
                 </motion.h1>
                 <motion.div
-                  className="w-48 h-1 bg-white/20 rounded-full mx-auto overflow-hidden"
-                  initial={{ scaleX: 0 }}
-                  animate={{ scaleX: 1 }}
-                  transition={{ duration: 3, ease: "easeInOut" }}
+                  className="relative w-48 h-48 mx-auto"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.5 }}
                 >
+                  {/* Circular Progress */}
+                  <svg className="w-full h-full" viewBox="0 0 100 100">
+                    {/* Background Circle */}
+                    <circle
+                      className="stroke-white"
+                      strokeWidth="10"
+                      fill="none"
+                      cx="50"
+                      cy="50"
+                      r="45"
+                    />
+                    {/* Progress Circle */}
+                    <motion.circle
+                      className="stroke-[#E41A1C]"
+                      strokeWidth="10"
+                      fill="none"
+                      cx="50"
+                      cy="50"
+                      r="45"
+                      strokeLinecap="round"
+                      initial={{ pathLength: 1 }}
+                      animate={{ 
+                        pathLength: timeLeft / 5,
+                        transition: { duration: 1, ease: "linear" }
+                      }}
+                      style={{
+                        transformOrigin: "center",
+                        transform: "rotate(-90deg)"
+                      }}
+                    />
+                  </svg>
+                  {/* Timer Text */}
                   <motion.div
-                    className="h-full bg-[#E41A1C]"
-                    initial={{ x: "-100%" }}
-                    animate={{ x: "100%" }}
-                    transition={{
-                      duration: 1.5,
-                      repeat: Infinity,
-                      ease: "linear",
-                    }}
-                  />
+                    className="absolute inset-0 flex items-center justify-center"
+                    initial={{ scale: 0.5 }}
+                    animate={{ scale: 1 }}
+                  >
+                    <span className="text-4xl font-bold text-white">
+                      {formatTime(timeLeft)}
+                    </span>
+                  </motion.div>
                 </motion.div>
               </motion.div>
             ) : !showSecondMessage ? (
