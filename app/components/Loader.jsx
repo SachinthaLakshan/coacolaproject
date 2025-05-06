@@ -113,6 +113,7 @@ export default function Loader({ onComplete, setSensorData }) {
 
           {/* Loader content */}
           <div className="relative flex flex-col items-center justify-center h-full">
+            {/* Logo */}
             <motion.div
               initial={{ scale: 0.8 }}
               animate={{ 
@@ -129,7 +130,57 @@ export default function Loader({ onComplete, setSensorData }) {
               <img 
                 src="/logo-loader.png" 
                 alt="Coca-Cola Logo" 
-                className="w-48 h-48 object-contain"
+                className="w-50 h-40 object-contain rounded-xl bg-white/10 p-2"
+              />
+            </motion.div>
+
+            {/* Left Bottle */}
+            <motion.div
+              initial={{ opacity: 0, x: -50 }}
+              animate={{ 
+                opacity: 1, 
+                x: 0,
+                rotate: [-5, 5, -5]
+              }}
+              transition={{ 
+                duration: 0.8,
+                rotate: {
+                  duration: 3,
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }
+              }}
+              className="absolute left-8 h-full flex items-center"
+            >
+              <img 
+                src="/bottle.png" 
+                alt="Coca-Cola Bottle" 
+                className="h-[80vh] object-contain"
+              />
+            </motion.div>
+
+            {/* Right Bottle */}
+            <motion.div
+              initial={{ opacity: 0, x: 50 }}
+              animate={{ 
+                opacity: 1, 
+                x: 0,
+                rotate: [5, -5, 5]
+              }}
+              transition={{ 
+                duration: 0.8,
+                rotate: {
+                  duration: 3,
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }
+              }}
+              className="absolute right-8 h-full flex items-center"
+            >
+              <img 
+                src="/bottle.png" 
+                alt="Coca-Cola Bottle" 
+                className="h-[80vh] object-contain"
               />
             </motion.div>
             {showMagicLoading ? (
@@ -201,7 +252,7 @@ export default function Loader({ onComplete, setSensorData }) {
                 className="text-center"
               >
                 <motion.h1
-                  className="text-6xl md:text-8xl font-bold text-white mb-6 tracking-wide"
+                  className="text-4xl md:text-6xl font-bold text-white mt-10 mb-6 tracking-wide"
                   initial={{ y: 20, opacity: 0 }}
                   animate={{ 
                     y: 0, 
@@ -216,7 +267,7 @@ export default function Loader({ onComplete, setSensorData }) {
                 </motion.h1>
                 
                 <motion.h2
-                  className="text-5xl md:text-7xl font-bold text-[#E41A1C] tracking-wider"
+                  className="text-4xl md:text-6xl font-bold text-[#E41A1C] tracking-wider"
                   initial={{ y: 20, opacity: 0 }}
                   animate={{ 
                     y: 0, 

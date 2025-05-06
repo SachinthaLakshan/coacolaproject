@@ -17,11 +17,11 @@ export default function Logo() {
           scale: { duration: 1 }
         }
       }}
-      className="relative w-full h-64 mb-8 px-4"
+      className="relative w-full h-40 mb-8 px-4"
     >
       {/* Logo image with effects */}
       <motion.div 
-        className="relative w-full h-full max-w-6xl mx-auto"
+        className="relative w-full h-full max-w-4xl mx-auto"
         initial={{ filter: "blur(10px)" }}
         animate={{ 
           filter: "blur(0px)",
@@ -32,9 +32,9 @@ export default function Logo() {
         }}
       >
         <img
-          src="/logo1.png"
+          src="/logo-loader1.png"
           alt="Coca-Cola Logo"
-          className="w-full h-full object-contain filter drop-shadow-lg scale-125"
+          className="w-full h-full object-contain filter drop-shadow-lg scale-110"
         />
       </motion.div>
     </motion.div>
