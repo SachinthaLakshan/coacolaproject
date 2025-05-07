@@ -125,7 +125,7 @@ export default function WelcomeMessage({ sensorData,onComplete }) {
           width={windowSize.width}
           height={windowSize.height}
           recycle={false}
-          numberOfPieces={500}
+          numberOfPieces={1600}
           gravity={0.2}
           colors={['#E41A1C', '#FFFFFF', '#FFD700']}
           style={{ position: 'fixed', top: 0, left: 0, zIndex: 1000 }}
@@ -133,19 +133,19 @@ export default function WelcomeMessage({ sensorData,onComplete }) {
       )}
       {showLostConfetti && (
         <div className="fixed inset-0 z-1000">
-          {[...Array(50)].map((_, index) => (
+          {[...Array(160)].map((_, index) => (
             <motion.div
               key={index}
               initial={{ 
                 x: Math.random() * windowSize.width,
                 y: -50,
                 opacity: 0,
-                scale: 0.5
+                scale: 1.3
               }}
               animate={{ 
                 y: windowSize.height + 50,
                 opacity: [0, 1, 1, 0],
-                scale: [0.5, 1, 1, 0.5],
+                scale: [1.3, 2.2, 2.2, 1.3],
                 rotate: Math.random() * 360
               }}
               transition={{
@@ -154,7 +154,7 @@ export default function WelcomeMessage({ sensorData,onComplete }) {
                 delay: Math.random() * 2,
                 ease: "linear"
               }}
-              className="absolute text-4xl"
+              className="absolute text-8xl"
               style={{
                 left: `${Math.random() * 100}%`,
                 animationDelay: `${Math.random() * 2}s`,
@@ -165,9 +165,9 @@ export default function WelcomeMessage({ sensorData,onComplete }) {
           ))}
         </div>
       )}
-      <div className="w-full max-w-2xl mx-auto mb-8 p-6 rounded-2xl backdrop-blur-md bg-white/10 border border-white/20 shadow-lg">
+      <div className="w-full max-w-6xl min-w-6xl mx-auto mb-20 p-16 rounded-[2rem] backdrop-blur-2xl bg-white/25 border border-white/40 shadow-2xl">
         {!showMessage ? (
-          <h1 className="text-3xl md:text-4xl font-bold text-center text-white mb-8">
+          <h1 className="text-7xl md:text-8xl font-bold text-center text-white mb-20">
             Feel the Pulse of Connection
           </h1>
         ) : (
@@ -177,7 +177,7 @@ export default function WelcomeMessage({ sensorData,onComplete }) {
             transition={{ duration: 0.5 }}
             className="text-center"
           >
-            <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">
+            <h2 className="text-6xl md:text-7xl font-bold text-white mb-12">
               {message}
             </h2>
             {showTimer && (
@@ -185,21 +185,21 @@ export default function WelcomeMessage({ sensorData,onComplete }) {
                 initial={{ scale: 0.8, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{ duration: 0.5 }}
-                className="text-4xl md:text-5xl font-bold text-[#E41A1C]"
+                className="text-8xl md:text-9xl font-bold text-[#E41A1C] mb-12"
               >
                 {formatTime(timeLeft)}
               </motion.div>
             )}
           </motion.div>
         )}
-        <div className="flex justify-center gap-4">
+        <div className="flex justify-center gap-12 mt-12">
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={onComplete}
-            className="px-6 py-3 bg-[#E41A1C] text-white font-bold rounded-full 
-                     shadow-lg hover:shadow-xl transition-all duration-300
-                     border-2 border-white/20 hover:border-white/40"
+            className="px-16 py-8 bg-[#E41A1C] text-white text-3xl font-bold rounded-full 
+                     shadow-2xl hover:shadow-2xl transition-all duration-300
+                     border-2 border-white/40 hover:border-white/60"
           >
             Begin Again
           </motion.button>
